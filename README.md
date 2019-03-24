@@ -29,20 +29,16 @@ function add_rating_to_comment_text( $comment = '')
 	if( $rating < 0 ){$color='red';}
 
 Потом добавляем текст с просьбой оценить комментарий и собственно сам рейтинг
-$comment .= '<br>Оцените комментарий без регистрации: ..<span id="strelka_vverh'.$id.'"><a href="javascript:void(0);" onclick="ajax(1,'.$id.');"><img src="'.
-	site_url().'/wp-content/plugins/comment-ratings/strelka_up.jpg"></a></span> <span id="rating'.$id.'" style="color: '.$color.'" title="Общий рейтинг '.
+$comment .= '<br>Оцените комментарий без регистрации: ..&lt;span id="strelka_vverh'.$id.'">&lt;a href="javascript:void(0);" onclick="ajax(1,'.$id.');">&lt;img src="'.
+	site_url().'/wp-content/plugins/comment-ratings/strelka_up.jpg">&lt;/a>&lt;/span> &lt;span id="rating'.$id.'" style="color: '.$color.'" title="Общий рейтинг '.
 	$rating.': &uarr;'.$row->pluses.' и &darr;'.$rating = $row->minuses.'">'.
-	$rating.'</span> . <span id="strelka_vniz'.$id.'"><a href="javascript:void(0);" onclick="ajax(-1,'.$id.');"><img src="'.site_url().'/wp-content/plugins/comment-ratings/strelka_down.jpg"></a></span><br>';
+	$rating.'&lt;/span> . &lt;span id="strelka_vniz'.$id.'">&lt;a href="javascript:void(0);" onclick="ajax(-1,'.$id.');">&lt;img src="'.site_url().'/wp-content/plugins/comment-ratings/strelka_down.jpg">&lt;/a>&lt;/span>&lt;br>';
   
 При нажатии на стрелку вверх или стрелку вниз, вызывается функция ajax. В неё передаётся 1 или -1 и номер комментария.
 
-Функция ajax добавляется через action comment_form, 
-add_action('comment_form', 'add_ajax_to_comment_form', 99);
-function add_ajax_to_comment_form()
-
-что наверно неправильно, так как если форма добавления комментариев будет отключена, то плагин не будет работать. 
-Но у меня на сайте форма добавления комментариев включена, так что я сделал так, 
-а Вам я советую добавить функцию add_ajax_to_comment_form в какой-то другой add_action
+Функция ajax добавляется через action wp_print_footer_scripts, 
+add_action( 'wp_print_footer_scripts', 'add_ajax_to_page' );
+function add_ajax_to_page()
 
 В функции ajax вызывается файл save-rating-vote.php, в котором плюс или минус добавляется в базу данных.
 
